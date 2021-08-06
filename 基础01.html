@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+</body>
+<script>
+  var a="aa"
+  var NaN=parseInt(a);
+  //NaN typeof后是一个Number
+  console.log(typeof NaN);
+  //if()括号语句里
+  //a是一个string，通过类型转换把string类似转化为了boolean，转换的规则呢，对于字符串来讲
+  //空字符就false，非空就是true
+  if(a){
+    console.log('a is existing');
+  }
+  //== 是因为他们的类似的值，而===会返回false，是因为它们是不同类型的值
+  console.log(undefined==null);
+  console.log(undefined===null);
+  /*
+   == 和 ===说明
+   
+   ==是相等，比较的时候会对类型进行转化         “23”==23  return true 
+   === 是全等， 比较的时候不会进行类型转化     “23”===23   return false
+  */
+
+  /*
+  在严格模式下，不能把函数命名和参数名为arguments和eval，同时两个参数命名不能同名
+  */
+  // function arguments(){
+  //   'use strict'
+  //   console.log(123);
+  // }
+    var foo1='123';
+    var foo2='456';
+  function foo(foo1,foo2){
+    console.log(arguments.length);
+    console.log(arguments[0]);
+    console.log(arguments[1]);
+    console.log(arguments);
+  }
+  foo(foo1,foo2);
+
+  // function doAdd(){
+  //   if(arguments.length==1){
+  //     alert(arguments[0]+10);
+  //   }else if(arguments.length==2){
+  //     alert(arguments[1]+arguments[0]);
+  //   }
+  // }
+  // function doAdd(num1,num2){
+  //   arguments[1]=10;
+  //   console.log(arguments[0]+num2);
+  // }
+  // function doAdd(num1){
+  //   //并不是我arguments里面就有一个10
+  //   arguments[1]=10;
+  //   console.log(num1+arguments[1]);
+  //   console.log(arguments);
+  // }
+   function doAdd(num1,num2){
+     //只传一个参数，第二个参数会是undefined，这跟定义变量不赋值的时候是一样的
+    console.log(num2);
+  }
+  doAdd(10);
+  </script>
+</html>

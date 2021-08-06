@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+<script>
+  var a=100;
+  function foo(){
+    var b=200;
+    //with会延长作用域
+      with(location){
+       var c=a+b;
+      }
+      //c作为执行环境的一部分
+     return c
+  }
+  console.log(foo());
+</script>
+</html>

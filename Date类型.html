@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+<script>
+  var time=new Date();//不传参，默认是当前时间
+  console.log(time);    
+  //直接把日期作为参数传入，其内部会自动执行Date.parse()返回相应日期的毫秒数
+  var somedate=new Date("May 25, 2004");
+  console.log(somedate);
+
+  var allFive=new Date(2005,4,5,16,44,22);
+  console.log(allFive);
+
+  /*
+    Date.now()
+  */
+  var start=Date.now();
+  for(let i=0;i<5;i++){
+    console.log(i);
+  }
+  var end=Date.now();
+  var result=start-end;
+  console.log(result,start);
+
+  /*
+  日期格式化方法
+  */
+  console.log(time.toDateString());//Fri Aug 06 2021
+  console.log(time.toTimeString());//14:56:25 GMT+0800 (中国标准时间)
+  console.log(time.toLocaleDateString()); //2021/8/6
+  console.log(time.toLocaleTimeString()); //下午2:56:25
+</script>
+</html>

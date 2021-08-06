@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+
+    var pattern1=/[bc]at/i;
+    var pattern2=new RegExp("[bc]at","i");
+    console.log(pattern1===pattern2);
+
+    /*
+    RegExp()
+    实例属性：
+    global:boolean
+    ignoreCases:boolean
+    lastIndex:Number
+    multiline:boolean
+    source:RegExp
+    */
+    var pattern3=/\.at/gi;
+    console.log(pattern3.ignoreCase); //true
+    console.log(pattern3.global);   //true
+    console.log(pattern3.lastIndex);    //0
+    console.log(pattern3.multiline);    //false
+    console.log(pattern3.source);   //  \.at
+
+
+
+    var text='mom and dad and baby'
+    var pattern4=/mom(and dad(and baby)?)?/gi
+    var matchs=pattern4.exec(text);
+    console.log(matchs.input);
+    console.log(matchs);
+  </script>
+</body>
+</html> 
