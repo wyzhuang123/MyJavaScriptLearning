@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+</body>
+<script>
+  /*
+  定义在全局的变量和在window对象上直接定义属性有一点差别:
+  全局变量不能通过delete操作符删除，而直接在window对象上定义的属性可以
+  */
+  
+  // "use strict"
+  var age=12;
+  window.color='blue';
+  delete window.color; //删除成功
+  delete window.age;   //删除失败  
+  console.log(age);  //对象属性的一个Configurable为false，在严格环境下会报错
+  // console.log(color);  //color undefined
+
+
+
+  // var wroxwin=window.open("http://www.baidu.com/","topFrame","height=400,width=400,top=10,left=10");
+  // console.log(wroxwin.opener==window);
+
+
+
+  /*
+  间歇调用和超时调用
+
+  setTimeout()的第二个参数告诉js多久把当前任务添加到任务队列中
+  */
+  // setTimeout("console.log('hello world')",2000);  不建议这样写
+  setTimeout(() => {
+    console.log('hello');
+  }, 1000);
+
+  var  abc= setInterval(()=>{
+    console.log('hello1');
+  },1000)
+  clearInterval(abc);
+
+
+  var num=0;
+  var max=10;
+  var intervalid=null;
+  function count(){
+    num++
+    console.log(num);
+    if(num==max){
+      //clearInterval(intervalid)  需要传一个参数
+      clearInterval(intervalid); //计数完毕停止计数器
+      console.log('计数完毕');
+    }
+  }
+  intervalid=setInterval(count,1000);
+  
+
+  //递归，实现interval
+    var num1=0;
+    function count1(){
+      num1++
+      console.log(num1);
+     if(num1<max){
+      setTimeout(count1,500);
+      }else{
+        alert('完毕');
+      }
+    } 
+
+    setTimeout(count1,500);
+
+
+
+    /*
+    系统对话框 alert() confirm() prompt()
+    */
+   var a= confirm('你是男的？');
+    if(a){
+      console.log('是的');
+    }else{
+      console.log('不是，我是女的');
+    }
+
+    var aa=prompt("你叫啥"); //获取输入框的内容
+    if(aa!=null){
+      alert('欢迎'+aa);
+    }
+    console.log(aa);
+    // if(window.prompt){
+    //   console.log('shi ');
+    // }
+
+
+</script>
+</html>

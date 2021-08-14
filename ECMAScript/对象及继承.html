@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+</body>
+<script>
+  //ECMAScript 有两个属性：数据属性和访问器属性
+
+  /*
+  1.数据属性
+  
+  因为是内部属性,规范中给了他们对双方括号
+
+  属性违规在非严格模式下不会报错！
+   
+  特性：
+  [[Configurable]]:能否通过delete删除属性、能否修改属性、能否把属性修改为访问器属性，总之就睡能否改变或者重新定义属性
+  [[Enumerable]]:能否通过for in 循环遍历
+  [[Writable]]: 能否改变属性的值,如果为false时,而去改变值，在非严格模式下就不会报错的
+  [[Value]]:包含这个属性的数据值，写入属性值时，新值保存在这个位置，默认值为undefined
+
+  如果在定义对象的时候不指定这些属性的值，那么他们默认都是false，[[Value]]是undefined
+  */
+//  "use strict"
+  var a={
+    //name属性的Value就是"lili"
+    name:"lili"
+  };
+
+  var b={};
+  Object.defineProperty(b,"name",{
+      configurable:false,
+      enumerable:false,
+      writable:true,
+      value:"lihua"
+  })
+  console.log(b);
+  b.name="lili";
+  // delete b.name;
+  console.log(b); //无法删除
+
+  //报错，无法重新定义
+  // Object.defineProperty(b,"name",{
+  //   configurable:true
+  // }) 
+
+
+
+
+  /*
+
+  2.访问器属性
+    不包括数据值，他们包含一对getter和setter函数
+
+    访问器属性有四个特性
+    [[Configurable]]:能否通过delete删除属性、能否修改属性、能否把属性修改为访问器属性，总之就睡能否改变或者重新定义属性
+    [[Enumerable]]:能否通过for in 循环遍历
+    [[Get]]:在读取属性时调用的函数。默认值为undefined
+    [[Set]]:在写入属性时调用的函数。默认值为undefined
+
+
+    不一定要同时指定getter和setter。缺getter不能读，缺setter不能写（在严格模式会报错）
+    
+  */
+
+
+
+    var book={
+      year:2004,
+      editon:1
+    }
+    // Object.defineProperty(book,"year",{
+    //   set:function(newValue){
+    //     if(newValue>2004){
+    //         this.editon=newValue-2004;
+    //         this.year=newValue;
+    //     }
+    //   }
+    // })
+    // book.year=2006;
+    // console.log(book);
+
+
+    /*
+    定义多个属性  Object.defineProperties()
+    */
+   Object.defineProperties(book,{
+     _author:{
+       value:"moyan"
+     },
+     author:{
+       get:function(){
+         return this._author;
+       }
+     },
+     localtion:{
+      value:'人民出版社'
+     }
+   })
+   console.log(book); //{year: 2004, editon: 1, author: "moyan", localtion: "人民出版社"}
+   
+   /*
+   读取属性的特性
+   Object.getOwnPropertyDescriptor
+   */
+   var Descriptor= Object.getOwnPropertyDescriptor(book,"year");
+   console.log(Descriptor);  //{value: 2004, writable: true, enumerable: true, configurable: true}
+   console.log(typeof Descriptor.get); //undefined
+
+   var Descriptor01= Object.getOwnPropertyDescriptor(book,"author");
+   console.log(Descriptor01.get); //  () { }
+
+  
+
+
+   /*
+
+
+   工厂模式:抽象了创建具体对象的过程
+           类似一个类的过程
+
+
+   */
+   function createPerson(name,age,sex){
+      var o=new Object();
+      o.name=name;
+      o.age=age;
+      o.sex=sex;
+      o.sayName=function(){
+        console.log('my name is '+this.name);
+      }
+      return o;      
+   }
+   var person1=createPerson("lihua",12,'male');
+   console.log(person1);
+   console.log(person1.sayName());
+
+
+
+
+   /*
+
+
+   构造函数模式
+   一般命名函数首字母为大写
+
+
+   */
+
+   function Person(name,age,height){
+        this.name=name;
+        this.age=age;
+        this.height=height;1
+        this.sayName=function(){
+          return this.name;
+        }
+   }
+   var person2=new Person("lili",12,166);
+   console.log(person2);
+   console.log(person2.sayName());
+   var person3=new Person("lihua",13,177);
+   console.log(person2==person3);
+   //通过构造器  constructor属性指向Person
+   console.log(person2.constructor==Person);  //true
+
+
+   //将构造函数当作函数：构造函数跟其他函数的区别在于调用他们的方式，如果用new来调用，就是构造函数，反之则跟普通函数没什么区别
+   
+   //构造函数的问题在于每次创建新实例有会有创建一个新方法，即使方法是一样，他们位于不同的作用域链上
+   console.log(person1.sayName==person2.sayName);  //fasle,两个方法内存地址不同
+   //当然，可以将sayName()定义在全局，然后通过this.sayName=sayName来调用
+   //可是这有问题，如果我们需要很多函数，那全局环境就会有很多构造内调用的函数，这可以通过原型链的方法去改变
+   
+
+
+
+
+
+   /*
+
+
+   原型模式
+
+
+   */
+   function _Person(){
+   }
+   _Person.prototype.name="nini";
+   _Person.prototype.age=29;
+   _Person.prototype.height=187;
+   _Person.prototype.sayName=function(){
+     return this.name;
+   }
+   _Person.prototype.sayPrototypeName=function(){
+     return this.prototype.name;
+   }
+
+   var person4=new _Person();
+   console.log(person4);
+   var person5=new _Person(); 
+   console.log(person4==person5);  //false
+   console.log(person4.sayName()==person5.sayName());   //true
+
+   //并没有定义实例的真正属性，而是通过原型链去访问这个方法，这两个变量都是如此，所有就是用一个方法
+   console.log(person4,person5);
+
+
+   /*
+   理解原型对象：只要创建一个新函数，就会根据一组特点的规则为该函数创建一个prototype，是指向函数的原型对象
+                默认情况下，所有原型对象都会自动获得一个constructor属性，其指向prototype函数所在的指针
+                即 _Person.prototype.constructor指向Person
+  
+                对象可以通过_proto_访问[[Prototype]] 
+                可以通过isPrototypeOf()来确定对象之间是否存在这种关系
+                Object.getPrototypeOf()可以返回[[Prototype]]的值                
+   */
+
+
+   /*
+
+   实例不能通过重写改变原型中的值。如果我们添加一个实例属性与原型属性同名，那么实例属性会屏蔽掉原型的那个属性
+   在实例上添加同名属性，就不会去原型链上找这个属性了，即使这个属性是undefined
+
+   */
+
+   person5.name='llili'; //添加实例属性
+   console.log(person5.name);
+   console.log(person5.sayName());
+  //  console.log(person5.sayPrototypeName());  //被屏蔽了
+
+
+
+   /*
+
+   通过一个hasOwnPropery()看这个属性是在原型上还是实例中。在实例中则返回true
+   
+   */
+
+  console.log(person4.hasOwnProperty("name")); //name属性在原型对象上，所有访问不到，返回false
+  console.log(person5.hasOwnProperty("name")); //实例中有name属性，返回true
+
+
+   /*
+
+   原型与in操作符
+   in操作符会在给的对象的属性中找，无论是存在于原型还是实例，故 console.log("name" in person4);  返回true
+
+   */
+
+   console.log(person4.hasOwnProperty("name")); //返回false
+   console.log("name" in person4); //返回true
+
+
+   //通过hasOwnPropery()和in操作符就可以知道对象属性是在实例还是原型
+   function hasPrototypeProperty(object,name){
+      return !object.hasOwnProperty(name) && (name in object)
+   }
+
+   console.log(hasPrototypeProperty(person4,"name")); //true
+   console.log(hasPrototypeProperty(person5,"name")); //false
+
+   /*
+
+   Object.keys(object.prototype)
+   接受一个对象参数，返回一个包含所有可枚举的 实例 属性的字符串数组
+
+   */
+
+   function __Person(){
+
+   }
+   __Person.prototype.name="lihua";
+   __Person.prototype.age=12;
+   __Person.prototype.job="Software Engineer"
+   __Person.prototype.sayHello=function(){
+     return 'hello,'+'i am'+this.name
+   }
+
+   var keys=Object.keys(__Person.prototype);
+   console.dir(__Person);
+   console.log(keys);
+
+   //证明返回的是实例的属性
+   var newobj=new __Person();
+   newobj.name="lili";
+   newobj.age=15;
+   var otherkeys=Object.keys(newobj);
+   console.log(otherkeys);
+   console.log(newobj);
+
+
+   /*
+
+   getOwnPropertyName()获取所有属性的名字，无论是否可枚举
+
+   */
+
+  var names=Object.getOwnPropertyNames(__Person.prototype);
+  var othernames=Object.getOwnPropertyNames(__Person);
+  console.log(names);
+  console.log(othernames);
+
+
+
+  /*
+
+  原型的动态性:在原型对象上做操作，可以立即反应到实例上
+
+  */
+ 
+   var friend=new __Person();
+   __Person.prototype.sayHI= function(){
+     return '你好呀！'
+   }
+   console.log(friend.sayHI());
+
+
+
+   /*
+
+   组合使用构造函数模式和原型模式：
+
+   把共享的数据或相同的方法放在原型对象上，而把有区别的属性通过构造函数放在实例上
+   
+   因为如果属性都定义在原型对象上，则可能不会有差异性，或者差异性收到影响
+   */
+
+   function Person_(name,age,sex,height,friends){
+     this.name=name;
+     this.age=age;
+     this.sex=sex;
+     this.height=height;
+     this.friends=friends;
+   }
+   
+   Person_.prototype.sayHi=function(){
+      return this.name
+   }
+
+   var Person__=new Person_("lili",16,'male',180,['lihua','john','kryie']);
+   var Person1__=new Person_("libai",66,'female',188,['dufu','baijuyi','sushi']);
+   console.log(Person__);
+   console.log(Person1__);
+   console.log(Person__.sayHi());
+   console.log(Person1__.sayHi());
+
+     //继承就是原型链构造的
+
+  function atype(name){
+   this.name=name;
+   this.friends=['lihua','libai','liguang'];
+  }
+  atype.prototype.sayHi=function(){
+    return this.name
+  }
+  function btype(name,age){
+    //1.
+    atype.call(this,name);
+    this.age=age;
+  }
+  //2.将btype的原型由atype创建
+  btype.prototype=new atype();
+  var a=new btype("lili",12);
+  a.friends.push('lijing');
+  console.log(a.sayHi());
+  console.log(a.friends);  //["lihua", "libai", "liguang", "lijing"]
+
+  var b=new btype();
+  console.log(b.friends);  //["lihua", "libai", "liguang"]
+  console.log(b);
+
+  /*
+
+  原型式继承
+  
+  */
+
+  function object1(o){
+    function F(){}
+    F.prototype=o;
+    return  new F();
+  }
+
+  var person={
+    name:'llli',
+    age:12,
+    sex:'male',
+    school:'清华大学',
+    friends:['lili','lihua','libai']
+  }
+
+  var person1=object1(person);
+  console.log(person1.friends);
+  var person2=object1(person);
+  person2.friends.push('likai');
+  console.log(person1.friends);
+  
+
+  /*
+  
+  Object.create()
+  引用原型对象中的属性
+  */
+  var c = Object.create(person);
+  console.log(c);
+  c.friends.push('lite');
+  console.log(c);
+
+
+  //第二个参数传入自己描述的属性，而且会跟defindeProperties()一样覆盖原型上的同名属性
+  var d=Object.create(person,{
+    name:{
+      value:"lihua"
+    }
+  })
+  // console.log(d.prototype.school);
+  console.log(d); //lihua
+  console.log(d.__proto__.name); //lili
+</script>
+</html>

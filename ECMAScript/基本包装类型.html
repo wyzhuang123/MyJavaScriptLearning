@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+</body>
+<script>
+  var a=false;
+  var b=new Boolean(); //构造函数
+  console.log((a==b));
+  console.log((a===b));
+  console.log(typeof a); //boolean
+  console.log(typeof b); //object
+  console.log(a instanceof Boolean); //false
+  console.log(b instanceof Boolean); //true
+
+  /*
+  Number
+
+  toFixed()会按照指定小数位返回的字符串表示
+  */
+  var num=10;
+  console.log(num.toFixed(3)); //10.000
+  var num1=10.005;
+  console.log(num1.toFixed(2)); //10.01
+
+  /*
+  String
+  charAt()
+  charCodeAt()：返回的是字符编码
+  */
+  var str=new String("Hello World");
+  console.log(str.charAt(0)); //H
+  console.log(str.charCodeAt(0)); //72
+
+
+  /*
+  操作方法：concat() substr() slice() substring()
+  */
+  var str1="hello";
+  var newstr=str1.concat(["mom"]);
+  console.log(newstr); //hellomom
+  //substr(index,返回的长度)
+  console.log(newstr.substr(1,2)); //el
+  //substring(startindex,endlocation)
+  console.log(newstr.substring(0,7));  //hellomo
+  //slice(startindex,endlocation)
+  var str2=newstr.slice(2,3);
+  console.log(str2);
+  console.log(newstr);
+
+
+  /*
+  字符串位置
+  */
+  var str3="this is my house";
+  //indexOf(匹配的字符,从哪个位置开始查找)
+  var result=str3.indexOf("s",4);
+  console.log(result);
+  var lastresult=str3.lastIndexOf("m",0);
+  console.log(lastresult);   
+
+  /*
+  字符串匹配
+  */
+  var text="cat,bat,sat,fat";
+  var pattern=/.at/g;
+  var matches=text.match(pattern);
+  console.log(matches); //["cat", "bat", "sat", "fat"]
+  
+  //replace(RegExp,替换的字符串)
+  var result1=text.replace(/at/g,"ond");
+  console.log(result1);
+
+  /*
+  字符串划分
+  */
+  var text01="bat,cat,dat,kat";
+  var ttt=text01.split(",");
+  console.log(ttt); //Array(4)
+
+
+  /*
+  ECMAScript有两个内置对象，一是Math，二是Global
+  */
+
+  /*
+  Math方法
+  */
+  var a =25.9;
+  var celia=Math.ceil(a); //向上舍入
+  var rounda=Math.round(a);  //标准舍入(四舍五入)
+  var floora=Math.floor(a);  //向下舍入
+  console.log(celia,rounda,floora);
+
+  //random()
+  var randomNum=Math.random();  //不传参，返回0-1的一个随机数，而且并不是整数
+  console.log(randomNum);
+  console.log(Math.round(randomNum));
+  //得到一个0-10的数，而且从1开始
+  var randomNewNum=Math.random()*10+1;
+  console.log(Math.round(randomNewNum));
+
+
+
+
+
+
+
+
+
+
+  </script>
+</html>

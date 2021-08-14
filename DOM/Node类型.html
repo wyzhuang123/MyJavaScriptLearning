@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- javascript所有节点类型都继承自node类型 -->
+  <div>
+    <p>123</p>
+    <h1>1</h1>
+  </div>
+  
+</body>
+<script>
+    var div=document.querySelector('div');
+    /*
+    1.nodeName 和 nodeValue  属性
+    */
+    if(div.nodeType==1){
+        value=div.nodeName; //nodeName的值是元素的标签名
+        console.log(value);   //DIV
+      }
+
+    /*
+    2.每个节点都有一个childNodes属性 访问子元素 
+      其保存着一个NodeList对象 ，可以通过方括号访问，也由length属性 ，但并不是Array()实例
+     可以用方括号 也可以用item()
+    */
+      var p=div.childNodes[0];  //text
+      var h1=div.childNodes.item(1); 
+      console.log(p);
+      console.log(h1);
+      console.log(div.childNodes); //代码间的空格间隙算作子元素之一，为text
+    
+    /*
+    3.每个节点都有一个parentNode属性，该属性指向文档树的父节点
+    */
+    console.log(p.parentNode);
+    console.log(p.parentNode==h1.parentNode);  //true
+    
+        /*
+        childNodes列表中每个节点相互之间都是同胞节点 ，可以通过 previousSibling 和 nextSibling 访问下一个节点 ，若到头了就返回null
+        */
+        console.log(p.previousSibling);  //第一个节点， 到头了  ，返回null
+        console.log(p.nextSibling);  
+        var last=div.childNodes[4];
+        console.log(last.nextSibling);   //最后一个节点 ，到尾了，返回null
+
+        /*
+        第一个节点和最后一个节点跟父节点的关系也特别， 可以通过 firstChild 和 lastChild 访问
+        */
+        console.log(div.firstChild==p);    //true
+        console.log(div.lastChild==last);  //true
+    
+    
+    /*
+    操作节点
+    */
+    var h2=document.createElement('h2');  //创建节点
+    h2.innerHTML='我是新增的节点h2'
+        /*
+        appendChild 在父节点末尾插入新节点 , 方法 return 插入节点
+        */
+        var returnNode=div.appendChild(h2)  //添加到div的末尾
+        console.log(returnNode);
+
+
+        /*
+        insertBefore(插入的节点，作为参照的节点)  插在参照节点的后面
+        方法 return 插入节点
+        */
+        var h3=document.createElement('h3');  //创建节点
+        h3.innerHTML='我是新增的节点h3'
+        var insertNode=div.insertBefore(h3,div.childNodes[2]);  //插入
+        console.log(insertNode);
+
+
+        /*
+        replaceChild(替换的节点，被替换的节点)
+        方法return 被替换的节点
+        */
+        var h4=document.createElement('h4');  //创建节点
+        h4.innerHTML='我是新增的节点h4，我替换了123'
+        var replaced=div.replaceChild(h4,div.childNodes[1]);
+        console.log(replaced);
+
+
+        /*
+        removeChild(要删除的节点)
+        方法return 被删除的节点
+        */
+        var removed=div.removeChild(div.childNodes[4]);
+        console.log(removed);
+        
+    /*
+    注意： replaceChild 替换的节点和 removeChild 删除的节点
+          仍然为文档所有，只不过在文档中没有了自己的位置
+    */
+
+        
+        /*
+        cloneNode(true/false)
+        如果为true则进行深拷贝，如果false则是浅拷贝
+        */
+        var cloneDiv=div.cloneNode(false);
+        console.log(cloneDiv.childNodes); //NodeList(0)
+
+        var deepCloneDiv=div.cloneNode(true);
+        console.log(deepCloneDiv.childNodes); //NodeList(6)[text, h4, h3, text, text, h2]
+
+        
+</script>
+</html>
